@@ -197,7 +197,7 @@ Resources:
         GetCardsByBoardApi:
           Type: Api
           Properties:
-            Path: /cards/{boardId}
+            Path: /boards/{boardId}/cards
             Method: get
 
   AddCardFunction:
