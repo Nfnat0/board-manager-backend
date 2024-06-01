@@ -1,0 +1,249 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Timeout: 30
+  Api:
+    Cors:
+      AllowMethods: "'OPTIONS,POST,GET,DELETE,PUT'"
+      AllowHeaders: "'Content-Type'"
+      AllowOrigin: "'*'"
+
+Resources:
+  BoardsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Boards
+      AttributeDefinitions:
+        - AttributeName: boardId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: boardId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  ListsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Lists
+      AttributeDefinitions:
+        - AttributeName: listId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: listId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  CardsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Cards
+      AttributeDefinitions:
+        - AttributeName: cardId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: cardId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  GetBoardsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/boards.getBoards
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          BOARDS_TABLE: !Ref BoardsTable
+      Events:
+        GetBoardsApi:
+          Type: Api
+          Properties:
+            Path: /boards
+            Method: get
+
+  AddBoardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/boards.addBoard
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          BOARDS_TABLE: !Ref BoardsTable
+      Events:
+        AddBoardApi:
+          Type: Api
+          Properties:
+            Path: /boards
+            Method: post
+
+  EditBoardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/boards.editBoard
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          BOARDS_TABLE: !Ref BoardsTable
+      Events:
+        EditBoardApi:
+          Type: Api
+          Properties:
+            Path: /boards
+            Method: put
+
+  DeleteBoardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/boards.deleteBoard
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          BOARDS_TABLE: !Ref BoardsTable
+          LISTS_TABLE: !Ref ListsTable
+          CARDS_TABLE: !Ref CardsTable
+      Events:
+        DeleteBoardApi:
+          Type: Api
+          Properties:
+            Path: /boards/{boardId}
+            Method: delete
+
+  GetListsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/lists.getLists
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          LISTS_TABLE: !Ref ListsTable
+      Events:
+        GetListsApi:
+          Type: Api
+          Properties:
+            Path: /lists
+            Method: get
+
+  AddListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/lists.addList
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          LISTS_TABLE: !Ref ListsTable
+      Events:
+        AddListApi:
+          Type: Api
+          Properties:
+            Path: /lists
+            Method: post
+
+  EditListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/lists.editList
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          LISTS_TABLE: !Ref ListsTable
+      Events:
+        EditListApi:
+          Type: Api
+          Properties:
+            Path: /lists
+            Method: put
+
+  DeleteListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/lists.deleteList
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          LISTS_TABLE: !Ref ListsTable
+          CARDS_TABLE: !Ref CardsTable
+      Events:
+        DeleteListApi:
+          Type: Api
+          Properties:
+            Path: /lists/{listId}
+            Method: delete
+
+  GetCardsByBoardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/cards.getCardsByBoard
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          CARDS_TABLE: !Ref CardsTable
+      Events:
+        GetCardsByBoardApi:
+          Type: Api
+          Properties:
+            Path: /cards/{boardId}
+            Method: get
+
+  AddCardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/cards.addCard
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          CARDS_TABLE: !Ref CardsTable
+      Events:
+        AddCardApi:
+          Type: Api
+          Properties:
+            Path: /cards
+            Method: post
+
+  EditCardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/cards.editCard
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          CARDS_TABLE: !Ref CardsTable
+      Events:
+        EditCardApi:
+          Type: Api
+          Properties:
+            Path: /cards
+            Method: put
+
+  DeleteCardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler:  src/handlers/cards.deleteCard
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          CARDS_TABLE: !Ref CardsTable
+      Events:
+        DeleteCardApi:
+          Type: Api
+          Properties:
+            Path: /cards/{cardId}
+            Method: delete
