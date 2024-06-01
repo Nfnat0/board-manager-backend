@@ -73,6 +73,9 @@ Resources:
       Environment:
         Variables:
           BOARDS_TABLE: !Ref BoardsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BoardsTable
       Events:
         GetBoardsApi:
           Type: Api
@@ -91,6 +94,9 @@ Resources:
       Environment:
         Variables:
           BOARDS_TABLE: !Ref BoardsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BoardsTable
       Events:
         AddBoardApi:
           Type: Api
@@ -109,6 +115,9 @@ Resources:
       Environment:
         Variables:
           BOARDS_TABLE: !Ref BoardsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BoardsTable
       Events:
         EditBoardApi:
           Type: Api
@@ -129,6 +138,13 @@ Resources:
           BOARDS_TABLE: !Ref BoardsTable
           LISTS_TABLE: !Ref ListsTable
           CARDS_TABLE: !Ref CardsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BoardsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ListsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CardsTable
       Events:
         DeleteBoardApi:
           Type: Api
@@ -147,6 +163,9 @@ Resources:
       Environment:
         Variables:
           LISTS_TABLE: !Ref ListsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ListsTable
       Events:
         GetListsApi:
           Type: Api
@@ -165,6 +184,9 @@ Resources:
       Environment:
         Variables:
           LISTS_TABLE: !Ref ListsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ListsTable
       Events:
         AddListApi:
           Type: Api
@@ -183,6 +205,9 @@ Resources:
       Environment:
         Variables:
           LISTS_TABLE: !Ref ListsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ListsTable
       Events:
         EditListApi:
           Type: Api
@@ -202,6 +227,11 @@ Resources:
         Variables:
           LISTS_TABLE: !Ref ListsTable
           CARDS_TABLE: !Ref CardsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ListsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CardsTable
       Events:
         DeleteListApi:
           Type: Api
@@ -220,6 +250,9 @@ Resources:
       Environment:
         Variables:
           CARDS_TABLE: !Ref CardsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CardsTable
       Events:
         GetCardsByBoardApi:
           Type: Api
@@ -238,6 +271,9 @@ Resources:
       Environment:
         Variables:
           CARDS_TABLE: !Ref CardsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CardsTable
       Events:
         AddCardApi:
           Type: Api
@@ -256,6 +292,9 @@ Resources:
       Environment:
         Variables:
           CARDS_TABLE: !Ref CardsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CardsTable
       Events:
         EditCardApi:
           Type: Api
@@ -274,6 +313,9 @@ Resources:
       Environment:
         Variables:
           CARDS_TABLE: !Ref CardsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CardsTable
       Events:
         DeleteCardApi:
           Type: Api
